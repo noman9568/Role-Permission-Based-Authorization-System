@@ -1,6 +1,6 @@
-# Customer Relationship Management (CRM) / HRMS System
+# Role and Permission Based Authorization System
 
-A role-based CRM/HRMS web application designed to manage users, departments, and organizational access efficiently. The system supports hierarchical roles and secure workflows, similar to real-world enterprise admin panels.
+A role-based web application designed to manage users, departments, and organizational access efficiently. The system supports hierarchical roles and secure workflows, similar to real-world enterprise admin panels.
 
 ---
 
@@ -49,7 +49,7 @@ A role-based CRM/HRMS web application designed to manage users, departments, and
 
 ## Project Structure
 
-crm-project/
+role-permission-project/
 │
 ├── frontend/ # React application
 ├── backend/ # Node.js + Express REST APIs
