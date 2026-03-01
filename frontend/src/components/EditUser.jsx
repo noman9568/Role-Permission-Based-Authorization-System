@@ -14,7 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useDispatch, useSelector } from "react-redux"
-import { asyncAddUser } from "@/store/actions/userAction"
+import { asyncUpdateUser } from "@/store/actions/userAction"
+
+
 import { useNavigate } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -51,7 +53,7 @@ const EditUser = () => {
 
   const { users } = useSelector(state => state.userReducer);
   const user = users.find(u => u._id == id);
-  const loggedUser = localStorage.getItem("user");
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
   
 
   useEffect(()=>{
@@ -60,7 +62,9 @@ const EditUser = () => {
       name: user.name,
       email: user.email,
       gender: user.gender,
-      department: user.department?._id.toString() || "",
+      department: user.department?._id
+        ? user.department._id.toString()
+        : "",
       role: user.role ? user.role.toLowerCase().replace(" ", "_") : "",
       permissions: user.permissions || [],
     })
@@ -96,8 +100,8 @@ const EditUser = () => {
       }
     }
 
-
-    await dispatch(asyncAddUser(form));
+    // const id = form.department;
+    await dispatch(asyncUpdateUser(id, form));
     // console.log(form)
     toast({
       title: "Success",
@@ -142,7 +146,7 @@ const EditUser = () => {
               onClick={async () => {
                 setConfirmData({ show: false });
                 // Directly call the form submission logic
-                await dispatch(asyncAddUser(form));
+                await dispatch(asyncUpdateUser(id, form));
                 toast({
                   title: "Success",
                   description: "User Registered successfully!",

@@ -11,6 +11,10 @@ import { asyncUsers } from '@/store/actions/userAction';
 const Departments = () => {
   const { departments } = useSelector(state => state.departmentReducer);
   const { users } = useSelector(state => state.userReducer);
+  // console.log("dept :", departments);
+  // console.log("user : ", users);
+  
+  
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,6 +52,8 @@ const Departments = () => {
     };
   });
 }, [departments, users, departmentEmployeeCount])
+  // console.log(modifiedDepartment);
+  // console.log(users.map(u => ({ name: u.name, id: u._id })))
 
 
   const handleDepartmentStatus = async (id) =>{

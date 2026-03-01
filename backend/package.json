@@ -1,7 +1,8 @@
 {
   "name": "crm-backend",
   "version": "1.0.0",
-  "description": "Role-based CRM / HRMS backend built with Node.js, Express, and MongoDB",
+  "type" : "module",
+  "description": "Role and Permission Based System / backend built with Node.js, Express, and MongoDB",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

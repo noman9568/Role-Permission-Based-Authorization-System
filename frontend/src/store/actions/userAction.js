@@ -1,5 +1,6 @@
 import axios from "axios"
-import { deleteUser, updateUsers, userPermissionChange, userRoleChange, userStatusChange } from "../userReducer"
+import { deleteUser, updateUsers, userPermissionChange, userRoleChange, userStatusChange, updateUser } from "../userReducer"
+import { asyncDepartments } from "./departmentAction";
 // import { useSelector } from "react-redux";
 
 
@@ -31,6 +32,7 @@ export const asyncAddUser = (data) => async (dispatch) =>{
         Authorization: `Bearer ${token}`
       },
     })
+    
     dispatch(asyncUsers());
   } 
   catch(err){
@@ -100,5 +102,20 @@ export const asyncUserPermission = (id, permissions) => async (dispatch) =>{
     dispatch(userPermissionChange({id, permissions}));
   } catch(err){
     console.log("Error in changing the permissions: ", err);
+  }
+}
+
+export const asyncUpdateUser = (id, form) => async (dispatch) =>{
+  try{
+    const token = localStorage.getItem("token");
+    const res = await axios.put(`http://localhost:3000/api/user/userUpdate/${id}`, form , {
+      headers: {
+      Authorization: `Bearer ${token}`
+      },
+    })
+    await dispatch(updateUser(res.data.user));
+    dispatch(asyncDepartments());
+  } catch (err) {
+    console.log("Error in updating the user: ", err);
   }
 }

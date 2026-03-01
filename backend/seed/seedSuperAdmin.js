@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "../.env" });
+dotenv.config();
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";

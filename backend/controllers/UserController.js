@@ -1,6 +1,15 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
+import Department from "../models/Department.js";
+
+const role_code = {
+  super_admin: 100,
+  admin: 200,
+  manager: 300,
+  employee: 400
+};
+
 
 
 export const userLogin = async (req, res) =>{
@@ -19,7 +28,7 @@ export const userLogin = async (req, res) =>{
       return res.status(403).json({message : "Blocked"});
     }
 
-    const token = await jsonwebtoken.sign({id: user._id, role: user.role}, process.env.JWT_SECRET, {expiresIn : "1d"})
+    const token = await jsonwebtoken.sign({id: user._id, role: user.role, roleCode: user.roleCode}, process.env.JWT_SECRET, {expiresIn : "1d"})
 
     const userResponse = user.toObject();
     delete userResponse.password;
@@ -37,7 +46,6 @@ export const userLogin = async (req, res) =>{
 
 export const userRegister = async (req, res) =>{
   try {
-    // console.log(req.body);
     const {name, email, gender, department, password, role, status, permissions} = req.body;
     // console.log(req.body);
     
@@ -53,7 +61,8 @@ export const userRegister = async (req, res) =>{
         await existingManager.save();
       }
     }
-    
+
+    const roleCode = role_code[role];
     const hashPassword = await bcrypt.hash(password, 8);
     const user = await User.create({
       name,
@@ -61,6 +70,7 @@ export const userRegister = async (req, res) =>{
       gender,
       department,
       password : hashPassword,
+      roleCode,
       role,
       status,
       permissions
@@ -69,6 +79,12 @@ export const userRegister = async (req, res) =>{
 
     const userResponse = user.toObject();
     delete userResponse.password;
+    if (role === "manager") {
+      await Department.findByIdAndUpdate(
+        department,
+        { manager: user._id }
+      );
+    }
 
     res.status(201).json({message: "Registered successfully", user: userResponse});
   } catch (error) {
@@ -101,9 +117,7 @@ export const getUserById = async (req, res) =>{
 export const deleteUserById = async (req, res) =>{
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    if(user.role==="super_admin" && req.user.role!=="super_admin"){
-      return res.status(403).json({message : "Unauthorized"});
-    }
+
     res.json({message : "User Deleted successfully.", id: req.params.id});
   } catch (err) {
     res.status(500).json({ message: "Server error" });
@@ -113,11 +127,9 @@ export const deleteUserById = async (req, res) =>{
 
 export const userStatusChange = async (req, res) =>{
   try{
+
     const user = await User.findById(req.params.id);
 
-    if(user.role==="super_admin" && req.user.role!=="super_admin"){
-      return res.status(403).json({message : "Unauthorized"});
-    }
     user.status = req.body.status === "active" ? "blocked" : "active";
     await user.save();
 
@@ -130,10 +142,9 @@ export const userStatusChange = async (req, res) =>{
 
 export const userRoleChange = async (req, res) =>{
   try{
+    
     const user = await User.findOneAndUpdate({_id : req.params.id}, {role: req.body.role});
-    if(user.role==="super_admin" && req.user.role!=="super_admin"){
-      return res.status(403).json({message : "Unauthorized"});
-    }
+
     res.json({message : "User role changed.", id: req.params.id});
   } catch (err) {
     res.status(500).json({ message: "Failed to change role", error: err });
@@ -143,6 +154,7 @@ export const userRoleChange = async (req, res) =>{
 
 export const userPermissionChange = async (req, res) =>{
   try{
+
     const ALLOWED_PERMISSIONS = [
       "create_user",
       "delete_user",
@@ -165,3 +177,61 @@ export const userPermissionChange = async (req, res) =>{
     res.status(500).json({ message: "Failed to update permissions", error: err });
   }
 }
+
+
+export const userUpdate = async (req, res) => {
+  try {
+
+    const userId = req.params.id;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (req.body.role === "manager") {
+
+      const department = await Department.findById(updatedUser.department);
+
+      if (!department) {
+        return res.status(404).json({ message: "Department not found" });
+      }
+
+      if (
+        department.manager &&
+        department.manager.toString() !== userId
+      ) {
+        await User.findByIdAndUpdate(
+          department.manager,
+          { role: "employee" }
+        );
+      }
+
+      department.manager = userId;
+      await department.save();
+    }else{
+      const dept = await Department.findById(updatedUser.department);
+      dept.manager = null;
+      dept.save();
+      // console.log(dept);
+    }
+
+    // 3️⃣ Return updated user
+    res.json({
+      message: "User updated successfully",
+      user: updatedUser
+    });
+
+  } catch (err) {
+    console.error("UPDATE ERROR:", err);
+    res.status(500).json({
+      message: "Update failed",
+      error: err.message
+    });
+  }
+};

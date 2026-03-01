@@ -15,7 +15,7 @@ import {
 } from "../ui/table"
 // @/components/ui/table
 
-export function AdminTable({ columns, data }) {
+export function AdminTable({ columns, data, getRowClassName }) {
   const table = useReactTable({
     data,
     columns,
@@ -43,7 +43,10 @@ export function AdminTable({ columns, data }) {
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id}
+                className={`transition-colors ${
+                  getRowClassName ? getRowClassName(row.original) : "hover:bg-zinc-50"
+                }`}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} style={{ width: cell.column.getSize()}} className="border border-gray-300">
                     {flexRender(

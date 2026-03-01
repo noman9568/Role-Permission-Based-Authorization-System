@@ -34,7 +34,17 @@ useEffect(() => {
   }
   // console.log(dept);
 
-  const filteredUsers = users ? users.filter(u => u.department?._id === dept._id) : [] ;
+  // const filteredUsers = users ? users.filter(u => u.department?._id === dept._id) : [] ;
+  // manager appears first
+  const filteredUsers = users
+  ? users
+      .filter(u => u.department?._id === dept._id)
+      .sort((a, b) => {
+        if (a.role === "manager") return -1;
+        if (b.role === "manager") return 1;
+        return 0;
+      })
+  : [];
   // console.log(filteredUsers);
   
 
@@ -68,6 +78,11 @@ useEffect(() => {
         <AdminTable
           data={filteredUsers}
           columns={selectedDepartmentColumn}
+          getRowClassName={(row) =>
+            row.role === "manager"
+              ? "bg-red-50 border-l-4 border-red-400 hover:bg-blue-100"
+              : ""
+          }
         />
       )}
 

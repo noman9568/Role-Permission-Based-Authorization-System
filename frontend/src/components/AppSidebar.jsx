@@ -24,12 +24,15 @@ import {
 const AppSidebar = ({ setHeading }) => {
   const { user, logout } = useAuth();
   const isAdmin = user?.role === "super_admin" || user?.role === "admin";
+  const iconClass =
+  "flex items-center justify-center w-6 h-6 rounded-xl bg-blue-600 text-white border border-blue-200";
+
 
   return (
     <Sidebar className="pl-4 py-3">
       {/* Header */}
       <SidebarHeader>
-        <h1 className="px-2 text-4xl font-bold text-red-700 mb-8">
+        <h1 className="px-2 text-3xl font-bold text-red-700 mb-8">
           !Treat
         </h1>
       </SidebarHeader>
@@ -41,8 +44,10 @@ const AppSidebar = ({ setHeading }) => {
             <SidebarMenuItem className="hover:bg-zinc-100 pl-1 rounded-l-xl">
               <SidebarMenuButton asChild tooltip="Super Admin Dashboard">
                 <NavLink to="/user_overview" onClick={() => setHeading("User Overview")}>
-                  <Shield />
-                  <span className="text-md">User Overview</span>
+                  <span className={iconClass}>
+                    <Shield size={14}/>
+                  </span>
+                  <span className="text-sm">User Overview</span>
                 </NavLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -51,8 +56,10 @@ const AppSidebar = ({ setHeading }) => {
           <SidebarMenuItem className="hover:bg-zinc-100 pl-1 rounded-l-xl">
             <SidebarMenuButton asChild tooltip="Admins">
               <NavLink to="/users" onClick={() => setHeading("Users")}>
-                <UserCog />
-                <span className="text-md">Users</span>
+                  <span className={iconClass}>
+                    <UserCog size={14}/>
+                  </span>
+                <span className="text-sm">Users</span>
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -60,8 +67,10 @@ const AppSidebar = ({ setHeading }) => {
           <SidebarMenuItem className="hover:bg-zinc-100 pl-1 rounded-l-xl">
             <SidebarMenuButton asChild tooltip="Role And Permission">
               <NavLink to="/role_permission" onClick={() => setHeading("Role And Permissions")}>
-                <Key />
-                <span className="text-md">Role and Permission</span>
+                <span className={iconClass}>
+                  <Key size={14}/>
+                </span>
+                <span className="text-sm">Role and Permission</span>
               </NavLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -70,8 +79,10 @@ const AppSidebar = ({ setHeading }) => {
         <SidebarMenuItem className="hover:bg-zinc-100 pl-1 rounded-l-xl">
           <SidebarMenuButton asChild tooltip="Departments">
             <NavLink to="/departments" onClick={() => setHeading("Departments")}>
-              <Building2 />
-              <span className="text-md">Departments</span>
+                <span className={iconClass}>
+                  <Building2 size={14}/>
+                </span>
+              <span className="text-sm">Departments</span>
             </NavLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -79,8 +90,10 @@ const AppSidebar = ({ setHeading }) => {
         <SidebarMenuItem className="hover:bg-zinc-100 pl-1 rounded-l-xl">
           <SidebarMenuButton asChild tooltip="Developer Details">
             <NavLink to="/developer" onClick={() => setHeading("Developer Details")}>
-              <Code />
-              <span className="text-md">Developer Details</span>
+                <span className={iconClass}>
+                  <Code size={14}/>
+                </span>
+              <span className="text-sm">Developer Details</span>
             </NavLink>
           </SidebarMenuButton>
         </SidebarMenuItem>

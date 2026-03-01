@@ -1,44 +1,58 @@
 import React from "react";
-import { AlertCircle } from "lucide-react"; // optional Lucide icon
+import { AlertCircle } from "lucide-react";
 
-export const userColumn = () => [
+export const userColumn = (setSelectedUser, setOpen) => [
   {
-    id: "alert", // unique id for columns without data
-    header: "",  // empty header
+    id: "alert",
+    header: "",
     cell: ({ row }) => {
-      const status = row.original.status;
-      let colourClass = "text-green-500";
+      const user = row.original;
+      const status = user.status;
 
-      if( status == "blocked") colourClass = "text-red-500";
+      let colourClass = "text-green-500";
+      if (status === "blocked") colourClass = "text-red-500";
+
       return (
         <div className="flex justify-center">
-          <AlertCircle className={`w-4 h-4 ${colourClass}`} />
+          <AlertCircle
+            className={`w-4 h-4 ${colourClass} cursor-pointer hover:scale-110 transition`}
+            onClick={() => {
+              setSelectedUser(user);
+              setOpen(true);
+            }}
+          />
         </div>
-      )
+      );
     },
-    size: 20, // optional: adjust width
+    size: 20,
   },
   {
     accessorKey: "name",
     header: "Name",
-    size: 100
+    size: 100,
   },
   {
     accessorKey: "email",
-    header: "Email"
+    header: "Email",
   },
   {
     accessorKey: "role",
-    header: "Role"
+    header: "Role",
   },
   {
     accessorKey: "status",
     header: "Status",
-    size:80,
+    size: 80,
     cell: ({ row }) => (
-      <span className={`${row.original.status=="active"? "text-green-600": "text-red-600"}`}>
-        {row.original.status=="active"? "Active" : "Blocked"}
+      <span
+        className={
+          row.original.status === "active"
+            ? "text-green-600"
+            : "text-red-600"
+        }
+      >
+        {row.original.status === "active" ? "Active" : "Blocked"}
       </span>
-    )
+    ),
   },
 ];

@@ -10,7 +10,7 @@ export const asyncDepartments = () => async (dispatch) =>{
         Authorization: `Bearer ${token}`
       }
     });
-    // console.log(response);
+    console.log(response);
     
     dispatch(updateDepartment(response.data));
   } catch(err){

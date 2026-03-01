@@ -28,10 +28,19 @@ export const userSlice = createSlice({
     userPermissionChange: (state, action) =>{
       const user = state.users.find(u => u._id === action.payload.id);
       user.permissions = action.payload.permissions;
+    },
+    updateUser: (state, action) => {
+      const index = state.users.findIndex(
+        u => u._id === action.payload._id
+      );
+      console.log("Redux update payload:", action.payload);
+      if (index !== -1) {
+        state.users[index] = action.payload;
+      }
     }
   }
 })
 
-export const {updateUsers, deleteUser, userStatusChange, userRoleChange, userPermissionChange} = userSlice.actions;
+export const {updateUsers, deleteUser, userStatusChange, userRoleChange, userPermissionChange, updateUser} = userSlice.actions;
 
 export default userSlice.reducer;
