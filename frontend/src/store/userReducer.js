@@ -33,7 +33,7 @@ export const userSlice = createSlice({
       const index = state.users.findIndex(
         u => u._id === action.payload._id
       );
-      console.log("Redux update payload:", action.payload);
+      // console.log("Redux update payload:", action.payload);
       if (index !== -1) {
         state.users[index] = action.payload;
       }

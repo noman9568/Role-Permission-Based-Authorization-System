@@ -116,7 +116,11 @@ export const getUserById = async (req, res) =>{
 
 export const deleteUserById = async (req, res) =>{
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
+    if(user.role==="manager"){
+      await Department.findByIdAndUpdate(user.department._id, {manager : null});
+    }
+    await user.deleteOne();
 
     res.json({message : "User Deleted successfully.", id: req.params.id});
   } catch (err) {
@@ -143,7 +147,8 @@ export const userStatusChange = async (req, res) =>{
 export const userRoleChange = async (req, res) =>{
   try{
     
-    const user = await User.findOneAndUpdate({_id : req.params.id}, {role: req.body.role});
+    const roleCode = role_code[req.body.role];
+    const user = await User.findOneAndUpdate({_id : req.params.id}, {role: req.body.role, roleCode: roleCode});
 
     res.json({message : "User role changed.", id: req.params.id});
   } catch (err) {
@@ -183,10 +188,15 @@ export const userUpdate = async (req, res) => {
   try {
 
     const userId = req.params.id;
-
+    const roleCode = role_code[req.body.role];
+    
+    
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      req.body,
+      {
+        ...req.body,
+        roleCode: roleCode
+      },
       { new: true }
     );
 

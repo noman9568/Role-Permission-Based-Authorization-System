@@ -1,5 +1,5 @@
 import { useContext, useState, createContext } from "react";
-import { store } from "../store";
+// import { store } from "../store";
 
 const AuthContext = createContext(null);
 
@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) =>{
   const isAuthenticated = Boolean(token && user);
 
   const login = ({token, user}) =>{
-    console.log("Login called");
+    // console.log("Login called");
     if(!user || !token) return;
 
     localStorage.setItem("token", token);

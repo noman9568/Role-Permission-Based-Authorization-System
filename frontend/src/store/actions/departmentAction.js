@@ -10,7 +10,7 @@ export const asyncDepartments = () => async (dispatch) =>{
         Authorization: `Bearer ${token}`
       }
     });
-    console.log(response);
+    // console.log(response);
     
     dispatch(updateDepartment(response.data));
   } catch(err){
@@ -37,12 +37,12 @@ export const asyncRegisterDepartment = (data) => async (dispatch) =>{
 export const asyncDepartmentStatus = (id, status) => async (dispatch) =>{
   try{
     const token = localStorage.getItem("token");
-    const res = await axios.post(`http://localhost:3000/api/department/departmentStatusChange/${id}`, {status} , {
+    await axios.post(`http://localhost:3000/api/department/departmentStatusChange/${id}`, {status} , {
       headers: {
         Authorization: `Bearer ${token}`
       },
     })
-    console.log("API :",res);
+    // console.log("API :",res);
     
     dispatch(departmentStatusChange(id));
     return true;
