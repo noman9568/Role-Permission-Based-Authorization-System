@@ -68,6 +68,8 @@ const Departments = () => {
       })
     }
   }
+
+  const handleEditDepartment = (code) => navigate(`/departments/${code}/edit`)
   
   
   return (
@@ -85,9 +87,11 @@ const Departments = () => {
       <AdminTable
         data={modifiedDepartment}
         columns={departmentColumn(
-          (id) => handleDepartmentStatus(id)
+          (id) => handleDepartmentStatus(id),
+          (code) => handleEditDepartment(code)
         )}
       />
+      {/* <button onClick={() => handleEditDepartment("IT")}>Click to edit</button> */}
     </div>
   )
 }

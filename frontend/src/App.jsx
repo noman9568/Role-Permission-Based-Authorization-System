@@ -12,6 +12,7 @@ import RoleAndPermission from "./components/RoleAndPermission";
 import Departments from "./components/Departments";
 import AddDepartment from "./components/AddDepartment";
 import EditUser from "./components/EditUser";
+import EditDepartment from "./components/EditDepartment";
 import SelectedDepartment from "./components/SelectedDepartment";
 import Developer from "./components/Developer";
 
@@ -77,6 +78,14 @@ const App = () => {
           element={
             <ProtectedRoute allowedRoles={["super_admin"]}>
               <AddDepartment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/departments/:code/edit"
+          element={
+            <ProtectedRoute allowedRoles={["super_admin"]}>
+              <EditDepartment />
             </ProtectedRoute>
           }
         />

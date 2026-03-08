@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom";
 
 
-export const departmentColumn = (onStatusChange) => [
+export const departmentColumn = (onStatusChange, onDepartmentEdit) => [
   {
     accessorKey: "department",
     header: "Departments",
@@ -92,7 +92,7 @@ export const departmentColumn = (onStatusChange) => [
           <DropdownMenuContent align="end" className="w-44 bg-white">
           
             <DropdownMenuItem
-              // onClick={() => onUserEdit(user._id)}
+              onClick={() => onDepartmentEdit(department.code)}
               className="cursor-pointer gap-2 data-[highlighted]:bg-zinc-100"
             >
               <Edit className="h-4 w-4 text-zinc-500"/>

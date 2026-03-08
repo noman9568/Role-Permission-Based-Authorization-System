@@ -50,3 +50,6 @@ export const asyncDepartmentStatus = (id, status) => async (dispatch) =>{
     console.log("Error in blocking the user: ", err);
   }
 }
+export const asyncUpdateDepartment = (id, form) => async (dispatch) =>{
+  
+}
