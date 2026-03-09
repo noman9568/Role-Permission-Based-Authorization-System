@@ -27,7 +27,7 @@ export const asyncAddUser = (data) => async (dispatch) =>{
   try{
     // console.log(data);
     const token = localStorage.getItem("token");
-    await axios.post("http://localhost:3000/api/user/registerUser", data, {
+    await axios.post("http://localhost:3000/api/user/register", data, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -43,7 +43,7 @@ export const asyncAddUser = (data) => async (dispatch) =>{
 export const asyncDeleteEmployee = (id) => async (dispatch) =>{
   try{
     const token = localStorage.getItem("token");
-    await axios.post(`http://localhost:3000/api/user/deleteUser/${id}`, {} , {
+    await axios.delete(`http://localhost:3000/api/user/${id}/delete`, {} , {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -60,7 +60,7 @@ export const asyncDeleteEmployee = (id) => async (dispatch) =>{
 export const asyncUserStatus = (id, status) => async (dispatch) =>{
   try{
     const token = localStorage.getItem("token");
-    await axios.post(`http://localhost:3000/api/user/userStatusChange/${id}`, {status} , {
+    await axios.patch(`http://localhost:3000/api/user/${id}/status`, {status} , {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -75,14 +75,14 @@ export const asyncUserStatus = (id, status) => async (dispatch) =>{
 
 export const asyncUserRole = (id, role) => async (dispatch) =>{
   try{
-    // console.log("CLicked")
+    
     const token = localStorage.getItem("token");
-    await axios.post(`http://localhost:3000/api/user/userRoleChange/${id}`, {role} , {
+    await axios.patch(`http://localhost:3000/api/user/${id}/role`, {role} , {
       headers: {
         Authorization: `Bearer ${token}`
       },
     })
-    // console.log("Clicked nothing", res);
+
     dispatch(userRoleChange({id, role}));
   } catch(err){
     console.log("Error in changing the role: ", err);
@@ -93,7 +93,7 @@ export const asyncUserPermission = (id, permissions) => async (dispatch) =>{
   try{
     // console.log("CLicked")
     const token = localStorage.getItem("token");
-    await axios.post(`http://localhost:3000/api/user/userPermissionChange/${id}`, {permissions} , {
+    await axios.patch(`http://localhost:3000/api/user/${id}/permissions`, {permissions} , {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -108,7 +108,7 @@ export const asyncUserPermission = (id, permissions) => async (dispatch) =>{
 export const asyncUpdateUser = (id, form) => async (dispatch) =>{
   try{
     const token = localStorage.getItem("token");
-    const res = await axios.put(`http://localhost:3000/api/user/userUpdate/${id}`, form , {
+    const res = await axios.put(`http://localhost:3000/api/user/${id}/update`, form , {
       headers: {
       Authorization: `Bearer ${token}`
       },

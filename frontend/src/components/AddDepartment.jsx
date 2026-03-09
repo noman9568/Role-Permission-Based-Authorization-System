@@ -25,7 +25,7 @@ const RequiredLabel = ({ children }) => (
   </span>
 );
 
-const AddDepartment = () => {
+const AddDepartment =  () => {
   const { users } = useSelector(state => state.userReducer);
   const { toast } = useToast();
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const AddDepartment = () => {
     description: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.name.trim()) {
@@ -51,10 +51,14 @@ const AddDepartment = () => {
     }
 
     // Send form to backend
-    console.log("Submitting Department:", form);
-    dispatch(asyncRegisterDepartment(form));
+    // console.log("Submitting Department:", form);
+    const res = await dispatch(asyncRegisterDepartment(form));
 
-    toast({ title: "Department registered", description: "Department created successfully" });
+    if(res){
+      toast({ title: "Department registered", description: "Department created successfully" });
+      navigate("/departments");
+    }
+    
 
     // Reset form
     setForm({

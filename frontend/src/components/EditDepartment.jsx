@@ -60,8 +60,9 @@ const EditDepartment = () => {
     }
 
     // Dispatch update action
-    dispatch(asyncUpdateDepartment(code, form));
+    dispatch(asyncUpdateDepartment(dept._id, form));
     toast({ title: "Department updated", description: "Changes saved successfully" });
+    navigate("/departments");
   };
 
   if (!form) return <div>Loading department data...</div>; // fallback while loading

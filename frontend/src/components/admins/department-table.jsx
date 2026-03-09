@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom";
 
 
-export const departmentColumn = (onStatusChange, onDepartmentEdit) => [
+export const departmentColumn = (onStatusChange, onDepartmentEdit, onDepartmentDelete) => [
   {
     accessorKey: "department",
     header: "Departments",
@@ -117,7 +117,7 @@ export const departmentColumn = (onStatusChange, onDepartmentEdit) => [
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              // onClick={() => onDelete(user._id)}
+              onClick={() => onDepartmentDelete(department._id)}
               className="cursor-pointer gap-2 text-red-600 
                         data-[highlighted]:bg-red-50 
                         data-[highlighted]:text-red-600"

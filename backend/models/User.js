@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
-    required: true
+    default: null
   },
   password: { type : String, required: true},
   roleCode : {

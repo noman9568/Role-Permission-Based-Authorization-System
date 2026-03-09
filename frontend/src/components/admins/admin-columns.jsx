@@ -8,16 +8,21 @@ export const userColumns = (onUserEdit, onDelete, onStatusChange, onView) => [
     header: "",
     size: 20,
     cell: ({ row }) => {
-      const user = row.original
-      const color = user.status === "active" ? "text-green-500" : "text-red-500"
+      const loggedUser = JSON.parse(localStorage.getItem("user"));
+      const user = row.original;
+
+      const isActionDisabled = loggedUser.role !== "super_admin" && user.role === "super_admin";
+      const color = user.status === "active" ? "text-green-500" : "text-red-500";
 
       return (
+        !isActionDisabled && (
         <div className="flex justify-center">
           <AlertCircle
             className={`w-4 h-4 cursor-pointer ${color} hover:scale-110 transition`}
             onClick={() => onView(user)}
           />
         </div>
+        )
       )
     },
   },

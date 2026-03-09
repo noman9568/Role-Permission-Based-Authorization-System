@@ -19,6 +19,10 @@ const departmentSchema = mongoose.Schema({
   isActive:{
     type: Boolean,
     default: true
+  },
+  description:{
+    type: String,
+    required: false
   }
 });
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { departmentColumn } from './admins/department-table';
 import { AdminTable } from './admins/AdminTable';
 import { useNavigate } from 'react-router-dom';
-import { asyncDepartments, asyncDepartmentStatus } from '@/store/actions/departmentAction';
+import { asyncDeleteDepartment, asyncDepartments, asyncDepartmentStatus } from '@/store/actions/departmentAction';
 import { useToast } from '@/hooks/use-toast';
 import { asyncUsers } from '@/store/actions/userAction';
 
@@ -59,6 +59,11 @@ const Departments = () => {
   const handleDepartmentStatus = async (id) =>{
     try{
       await dispatch(asyncDepartmentStatus(id));
+      toast({
+        title: "Success",
+        description: "Department Blocked successfully!",
+        duration: 1000
+      });
       
     } catch(err) {
       toast({
@@ -69,7 +74,25 @@ const Departments = () => {
     }
   }
 
-  const handleEditDepartment = (code) => navigate(`/departments/${code}/edit`)
+  const handleEditDepartment = (code) => navigate(`/departments/${code}/edit`);
+  const handleDeleteDepartment = async (id) => {
+    try{
+      await dispatch(asyncDeleteDepartment(id));
+      toast({
+        title: "Success",
+        description: "Department deleted successfully!",
+        duration: 1000
+      });
+    }
+    catch(err){
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      })
+    }
+    
+  }
   
   
   return (
@@ -88,7 +111,8 @@ const Departments = () => {
         data={modifiedDepartment}
         columns={departmentColumn(
           (id) => handleDepartmentStatus(id),
-          (code) => handleEditDepartment(code)
+          (code) => handleEditDepartment(code),
+          (id) => handleDeleteDepartment(id)
         )}
       />
       {/* <button onClick={() => handleEditDepartment("IT")}>Click to edit</button> */}

@@ -92,6 +92,9 @@ const Users = () => {
       <AdminTable
         data={filteredUsers}
         columns={userColumns(handleEditUser, handleDeleteUser, handleUserStatus, handleViewUser)}
+        getRowClassName={(row) =>
+          row.role === "super_admin" ? "bg-blue-50 border-l-4 border-red-600" : ""
+        }
       />
 
       <UserDetailsDialog

@@ -16,11 +16,17 @@ const departmentSlice = createSlice({
       if(department){
         department.isActive = !department.isActive;
       }
+    },
+    addDepartment: (state, action) =>{
+      state.departments.push(action.payload);
+    },
+    deleteDepartment: (state, action) =>{
+      state.departments = state.departments.filter(dpt => dpt._id!== action.payload);
     }
   }
 });
 
 
-export const { updateDepartment, departmentStatusChange } = departmentSlice.actions;
+export const { updateDepartment, departmentStatusChange, addDepartment, deleteDepartment } = departmentSlice.actions;
 
 export default departmentSlice.reducer;
